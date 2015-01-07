@@ -34,8 +34,7 @@ public class Main {
         GL11.glOrtho(
             0, settings.get("display_width"), settings.get("display_height"), 0, 1, -1
         );
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glEnable(GL11.GL_BLEND);
+//        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 //        Load the key configs in the properties file

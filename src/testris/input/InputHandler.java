@@ -61,7 +61,6 @@ public class InputHandler {
             if (Keyboard.getEventKeyState()) {
                 String inputPressed = keyMapping.get(Keyboard.getEventKey());
                 if (inputPressed != null) {
-                    System.out.println(inputPressed);
                     pressedInput.put(inputPressed, true);
                 }
             }
