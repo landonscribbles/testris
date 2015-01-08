@@ -7,7 +7,6 @@ import org.newdawn.slick.TrueTypeFont;
 import testris.input.InputHandler;
 
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 // Have each screen require a start method (write an interface) also each one should be passed
@@ -73,6 +72,10 @@ public class TitleScreen implements Scene {
             atStart = !atStart;
         }
 
+        public boolean isAtStart(){
+            return atStart;
+        }
+
     }
 
     public void start() {
@@ -88,7 +91,7 @@ public class TitleScreen implements Scene {
     }
 
     public void gameLoop() {
-        System.out.println("Entering poll loop");
+        System.out.println("Entering title loop");
         while (sceneRunning) {
             if (Display.isCloseRequested()) {
                 System.exit(0);
@@ -102,6 +105,15 @@ public class TitleScreen implements Scene {
     public void processInput() {
         HashMap<String, Boolean> pressedInput;
         pressedInput = inputHandler.getPressedInput();
+        if (pressedInput.get("confirm") != null && cursor.isAtStart()) {
+            //            load the game here
+            System.out.println("Loading game...");
+            GameScreen newGame = new GameScreen(this);
+            newGame.start();
+        } else if (pressedInput.get("confirm") != null && !cursor.isAtStart()) {
+            System.out.println("Thanks for playing!");
+            System.exit(0);
+        }
         if (pressedInput.get("up") != null){
             cursor.toggleCursor();
         }
@@ -135,6 +147,7 @@ public class TitleScreen implements Scene {
     }
 
     public void end() {
+        sceneRunning = false;
 //        Any cleanup needed can be done here
     }
 }

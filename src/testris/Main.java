@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import testris.config.KeyConfigs;
 import testris.config.Settings;
 import testris.input.InputHandler;
+import testris.scenes.Scene;
 import testris.scenes.TitleScreen;
 
 import java.util.HashMap;
