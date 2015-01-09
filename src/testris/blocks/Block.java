@@ -1,5 +1,7 @@
 package testris.blocks;
 
+import java.util.HashMap;
+
 public interface Block {
     // Return the points of the quad
     public int[] getDrawPoints();
@@ -8,7 +10,7 @@ public interface Block {
     public void setDrawPoints(int[] drawPoints);
 
     //Return the color of the block
-    public float[] getColor();
+    public HashMap<String, Float> getColor();
 
     // Get the block's location on the playfield frid
     public int[] getGridLocation();

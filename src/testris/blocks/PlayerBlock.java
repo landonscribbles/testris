@@ -1,27 +1,41 @@
 package testris.blocks;
 
-public class PlayerBlock implements Block {
-    private int[] drawPoints = new int[4];
-    private int[] gridLocation = new int[2];
-    private float[] blockColor = new float[4];
-    private boolean blockIsDead;
+import org.lwjgl.util.Point;
 
-    public PlayerBlock(int[] drawPoints, float[] color, int[] gridLocation) {
-        this.drawPoints = drawPoints;
-        this.gridLocation = gridLocation;
-        this.blockColor = color;
-        this.blockIsDead = false;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class PlayerBlock implements Block {
+    private ArrayList<ArrayList> blocks;
+    private ArrayList<Point> gridLocations;
+    private HashMap<String, Float> blockColor;
+    private boolean blockIsControlled;
+
+    public PlayerBlock(ArrayList<ArrayList> blockArray, HashMap<String, Float> color, ArrayList<Point> gridLoc) {
+        blocks = blockArray;
+        gridLocations = gridLoc;
+        blockColor = color;
+        blockIsControlled = true;
+    }
+//    Player blocks should be passed in the board or board state of where the top collidable
+//    edge is to then check each of it's sections to see if it is going to collide on each
+//    downward movement if it does it should be added to the board and then be marked
+//    as no longer controllable
+    public void draw(){
+
     }
 
-    public int[] getDrawPoints() { return this.drawPoints; }
+    public void gridLocation(ArrayList<Point> gridLocs) {
+        gridLocations = gridLocs;
+    }
 
-    public void setDrawPoints(int[] drawPoints) { this.drawPoints = drawPoints; }
+    public HashMap<String, Float> getColor() {
+        return blockColor;
+    }
 
-    public float[] getColor() { return this.blockColor; }
+    public int[] getGridLocation() { return gridLocation; }
 
-    public int[] getGridLocation() { return this.gridLocation; }
-
-    public void setGridLocation(int[] gridLocation) { this.gridLocation = gridLocation; }
+    public void setGridLocation(int[] gridLocation) { gridLocation = gridLocation; }
 
     public boolean isDead() { return blockIsDead; }
 
