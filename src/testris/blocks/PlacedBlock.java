@@ -1,6 +1,6 @@
 package testris.blocks;
 
-public class PlacedBlock  implements Block {
+public class PlacedBlock {
     private int[] drawPoints = new int[4];
     private int[] gridLocation = new int[2];
     private float[] blockColor = new float[4];

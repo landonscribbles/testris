@@ -18,8 +18,8 @@ public class KeyConfigs {
         inputNames.add("down");
         inputNames.add("left");
         inputNames.add("right");
-        inputNames.add("rotate_right");
-        inputNames.add("rotate_left");
+//        inputNames.add("rotate_right");
+//        inputNames.add("rotate_left");
         inputNames.add("confirm");
         inputNames.add("escape");
     }
@@ -45,8 +45,8 @@ public class KeyConfigs {
         keyConfigs.put(Integer.parseInt(props.getProperty("down_key")), "down");
         keyConfigs.put(Integer.parseInt(props.getProperty("left_key")), "left");
         keyConfigs.put(Integer.parseInt(props.getProperty("right_key")), "right");
-        keyConfigs.put(Integer.parseInt(props.getProperty("rotate_left_key")), "rotate_left");
-        keyConfigs.put(Integer.parseInt(props.getProperty("rotate_right_key")), "rotate_right");
+//        keyConfigs.put(Integer.parseInt(props.getProperty("rotate_left_key")), "rotate_left");
+//        keyConfigs.put(Integer.parseInt(props.getProperty("rotate_right_key")), "rotate_right");
         keyConfigs.put(Integer.parseInt(props.getProperty("select_key")), "confirm");
         keyConfigs.put(Integer.parseInt(props.getProperty("escape_key")), "escape");
 
