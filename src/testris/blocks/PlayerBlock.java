@@ -271,7 +271,7 @@ public class PlayerBlock {
                 return;
             } else {
                 Point currentGridPoint = pieceSections.get(2).getGridLocation();
-                Point startPoint = new Point(currentGridPoint.getX(), currentGridPoint.getX() + moveY);
+                Point startPoint = new Point(currentGridPoint.getX(), currentGridPoint.getY() + moveY);
                 for (int i=0; i < pieceSections.size(); i++) {
                     Point newPoint = new Point(startPoint.getX(), startPoint.getY() + i);
                     rotationLocation.add(newPoint);
@@ -288,7 +288,7 @@ public class PlayerBlock {
                 moveX = -1;
             }
             Point currentGridPoint = pieceSections.get(2).getGridLocation();
-            Point startPoint = new Point(currentGridPoint.getX() - 2 + moveX, currentGridPoint.getY());
+            Point startPoint = new Point(currentGridPoint.getX() - 2 + moveX, currentGridPoint.getY() - 1);
             for (int i=0; i < pieceSections.size(); i++) {
                 Point newPoint = new Point(startPoint.getX() + i, startPoint.getY());
                 rotationLocation.add(newPoint);
