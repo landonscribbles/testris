@@ -14,10 +14,25 @@ public class PlayerBlock {
     private boolean isGameOver;
     private String blockType;
     private ArrayList<BoardTile> pieceSections;
+    private Integer normalDownRate;
+    private Boolean isDownPressed;
+    private Integer playerDownRate;
+    private String currentBlockState; // Choice should be "down", "left", "up", "right" and rotate in that order
+//    Testing
+    HashMap<String, Float> cyan = new HashMap<>();
+
 
     public PlayerBlock(String blockType, Board playBoard) {
+//        Testing
+        cyan.put("red", 0.0f);
+        cyan.put("green", 1.0f);
+        cyan.put("blue", 1.0f);
+        normalDownRate = 60;
+        playerDownRate = 4;
         blockIsControlled = true;
         isGameOver = false;
+        isDownPressed = false;
+        currentBlockState = "down";
         this.playBoard = playBoard;
         this.blockType = blockType;
         System.out.println("Block type is: " + this.blockType);
@@ -84,9 +99,23 @@ public class PlayerBlock {
         }
     }
 
+    public void setDownPressed() {
+        isDownPressed =  true;
+    }
+
+    public void releasedDownPressed() {
+        isDownPressed = false;
+    }
+
     public void update(Integer frameNumber) {
 //        TODO collision checking is going to need to happen here
-        if (frameNumber % 60 == 0 && blockIsControlled) {
+        int downRate;
+        if (isDownPressed) {
+            downRate = playerDownRate;
+        } else {
+            downRate = normalDownRate;
+        }
+        if (frameNumber % downRate == 0 && blockIsControlled) {
             for (BoardTile tile: pieceSections) {
                 Point newGridLocation = new Point(tile.getGridLocation().getX(), tile.getGridLocation().getY() + 1);
                 tile.setGridLocation(newGridLocation);
@@ -142,10 +171,6 @@ public class PlayerBlock {
     public void generateTiles() {
         pieceSections = new ArrayList<>();
         if (blockType == "L") {
-            HashMap<String, Float> cyan = new HashMap<>();
-            cyan.put("red", 0.0f);
-            cyan.put("green", 1.0f);
-            cyan.put("blue", 1.0f);
             int startingTile = 3;
             for (int i=0; i<4; i++){
                 Point gridLocation = new Point(startingTile+i, 0);
@@ -170,13 +195,122 @@ public class PlayerBlock {
 
     }
 
-    private Boolean canRotate() {
-//        Check the collision against the board to see if a block can be turned
-        return true;
+//    private Boolean canRotate() {
+////        Check the collision against the board to see if a block can be turned
+//        return true;
+//    }
+
+    private Boolean willCollideWithBoard(ArrayList<Point> newPoints) {
+        Boolean willCollide = false;
+        ArrayList<ArrayList> playTiles = playBoard.getTiles();
+        for (ArrayList<BoardTile> rowTiles: playTiles) {
+            for (BoardTile playTile: rowTiles) {
+                if (playTile.isEmpty()) {
+                    continue;
+                }
+                for (Point newPoint : newPoints) {
+                    if ((playTile.getGridLocation().getX() == newPoint.getX()) && (playTile.getGridLocation().getY() == newPoint.getY())) {
+                        willCollide = true;
+                    }
+                }
+            }
+        }
+        return willCollide;
     }
 
-    private void rotate() {
+    public void rotate() {
 
+        if (blockType == "L") {
+            System.out.println("Attempting to rotate L...");
+            rotateLBlock();
+        }
+    }
+
+    private void rotateLBlock() {
+        ArrayList<Point> rotationLocation = new ArrayList<>();
+        if (currentBlockState == "down") {
+            int moveY = 0; // If we're at the bottom of the board move up
+            int currentGridYPoint = pieceSections.get(1).getGridLocation().getY();
+            if (currentGridYPoint >= 18) {
+                moveY = -1;
+            }
+            if (currentGridYPoint <= 1) {
+                return;
+            } else {
+                Point currentGridPoint = pieceSections.get(1).getGridLocation();
+                Point startPoint = new Point(currentGridPoint.getX(), currentGridPoint.getY() - 2 + moveY);
+                for (int i=0; i < pieceSections.size(); i++) {
+                    Point newPoint = new Point(startPoint.getX(), startPoint.getY() + i);
+                    rotationLocation.add(newPoint);
+                }
+                currentBlockState = "left";
+            }
+        } else if (currentBlockState == "left") {
+            int moveX = 0; // If we're too close to the left/right side of the board
+            int currentGridXPoint = pieceSections.get(1).getGridLocation().getX();
+            if (currentGridXPoint <= 1) {
+                moveX = 1;
+            }
+            if (currentGridXPoint >= 8) {
+                moveX = -2;
+            }
+            Point currentGridPoint = pieceSections.get(1).getGridLocation();
+            Point startPoint = new Point(currentGridPoint.getX() - 1 + moveX, currentGridPoint.getY());
+            for (int i=0; i < pieceSections.size(); i++) {
+                Point newPoint = new Point(startPoint.getX() + i, startPoint.getY());
+                rotationLocation.add(newPoint);
+            }
+            currentBlockState = "up";
+        } else if (currentBlockState == "up") {
+            int moveY = 0;
+            int currentGridYPoint = pieceSections.get(2).getGridLocation().getY();
+            if (currentGridYPoint >= 17) {
+                moveY = -2;
+            }
+            if (currentGridYPoint <= 0) {
+                return;
+            } else {
+                Point currentGridPoint = pieceSections.get(2).getGridLocation();
+                Point startPoint = new Point(currentGridPoint.getX(), currentGridPoint.getX() + moveY);
+                for (int i=0; i < pieceSections.size(); i++) {
+                    Point newPoint = new Point(startPoint.getX(), startPoint.getY() + i);
+                    rotationLocation.add(newPoint);
+                }
+                currentBlockState = "right";
+            }
+        } else if (currentBlockState == "right") {
+            int moveX = 0;
+            int currentGridXPoint = pieceSections.get(2).getGridLocation().getX();
+            if (currentGridXPoint <= 2) {
+                moveX = 2;
+            }
+            if (currentGridXPoint >=9) {
+                moveX = -1;
+            }
+            Point currentGridPoint = pieceSections.get(2).getGridLocation();
+            Point startPoint = new Point(currentGridPoint.getX() - 2 + moveX, currentGridPoint.getY());
+            for (int i=0; i < pieceSections.size(); i++) {
+                Point newPoint = new Point(startPoint.getX() + i, startPoint.getY());
+                rotationLocation.add(newPoint);
+            }
+            currentBlockState = "down";
+        }
+        if(!willCollideWithBoard(rotationLocation)) {
+            System.out.println("No collision, turning!");
+            ArrayList<BoardTile> tempPieceSections =  new ArrayList<>();
+            for (int i=0; i < pieceSections.size(); i++) {
+                Point newPoint = rotationLocation.get(i);
+                Point fixedPixel = playBoard.getPixelLocation(newPoint);
+                BoardTile newBoardTile = new BoardTile(newPoint, fixedPixel, playBoard.getTileSize());
+                newBoardTile.setColor(cyan);
+                newBoardTile.setToDraw();
+                tempPieceSections.add(newBoardTile);
+                }
+            pieceSections = tempPieceSections;
+
+        } else {
+            System.out.println("Failed to turn due to collision");
+        }
     }
 
     public HashMap<String, Float> getColor() {

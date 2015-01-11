@@ -101,6 +101,11 @@ public class BoardTile {
         toDraw = true;
     }
 
+    public void setEmpty() {
+        empty = true;
+        toDraw = false;
+    }
+
     public Boolean isEmpty() {
         return empty;
     }

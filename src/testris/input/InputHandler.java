@@ -63,6 +63,10 @@ public class InputHandler {
                 if (inputPressed != null) {
                     pressedInput.put(inputPressed, true);
                 }
+            } else {
+                if (Keyboard.getEventKey() == Keyboard.KEY_S) {
+                    pressedInput.put("down_released", true);
+                }
             }
         }
         return pressedInput;

@@ -94,6 +94,15 @@ public class GameScreen implements Scene {
         if (pressedInput.get("right") != null) {
             playerBlock.moveRight();
         }
+        if (pressedInput.get("up") != null) {
+            playerBlock.rotate();
+        }
+        if (pressedInput.get("down") != null) {
+            playerBlock.setDownPressed();
+        }
+        if (pressedInput.get("down_released") != null) {
+            playerBlock.releasedDownPressed();
+        }
 
     }
 }
