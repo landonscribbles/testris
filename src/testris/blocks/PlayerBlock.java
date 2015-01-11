@@ -83,8 +83,8 @@ public class PlayerBlock {
             Point newGrid = new Point(newX, oldGridPoint.getY());
             originalPoints.add(oldGridPoint);
             tile.setGridLocation(newGrid);
-            Point newPixelLocatoin = playBoard.getPixelLocation(tile.getGridLocation());
-            tile.setPixelLocation(newPixelLocatoin);
+            Point newPixelLocation = playBoard.getPixelLocation(tile.getGridLocation());
+            tile.setPixelLocation(newPixelLocation);
             if (tile.getGridLocation().getX() > 9) {
 //                unwind changes here
                 for (int i=0; i < originalPoints.size(); i++) {
@@ -129,6 +129,14 @@ public class PlayerBlock {
     private void checkCollision() {
         Boolean collided = false;
         ArrayList<ArrayList> boardGrid = playBoard.getTiles();
+        for (BoardTile pieceTile: pieceSections) {
+            Point pieceGridPoint = pieceTile.getGridLocation();
+            if (pieceGridPoint.getY() == 20) {
+                System.out.println("Y Collided!");
+                collided = true;
+                break;
+            }
+        }
         for (ArrayList<BoardTile> tileRow: boardGrid) {
             for (BoardTile boardTile: tileRow) {
                 if (boardTile.isEmpty()) {
@@ -139,6 +147,7 @@ public class PlayerBlock {
                         Point pieceGridPoint = pieceTile.getGridLocation();
                         if ((boardGridPoint.getY() == pieceGridPoint.getY()) && boardGridPoint.getX() == pieceGridPoint.getX()) {
                             collided = true;
+                            break;
                         }
                     }
                 }
@@ -163,6 +172,7 @@ public class PlayerBlock {
 
     private void addBlockToBoard() {
         for (BoardTile tile : pieceSections) {
+            System.out.println("Attempting to add block at: " + tile.getGridLocation().getX() + ", " + tile.getGridLocation().getY());
             playBoard.addBlock(tile);
         }
     }
@@ -192,7 +202,6 @@ public class PlayerBlock {
         for (BoardTile tile: pieceSections) {
             tile.draw();
         }
-
     }
 
 //    private Boolean canRotate() {
@@ -264,7 +273,7 @@ public class PlayerBlock {
         } else if (currentBlockState == "up") {
             int moveY = 0;
             int currentGridYPoint = pieceSections.get(2).getGridLocation().getY();
-            if (currentGridYPoint >= 17) {
+            if (currentGridYPoint >= 19) {
                 moveY = -2;
             }
             if (currentGridYPoint <= 0) {

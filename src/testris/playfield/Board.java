@@ -4,7 +4,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class Board {
 
@@ -34,7 +36,7 @@ public class Board {
         setTileSize();
         createGrid();
 //        Testing crap
-        testGrid();
+//        testGrid();
     }
 
     private void testGrid() {
@@ -66,6 +68,8 @@ public class Board {
             tile.setFilled();
         }
     }
+
+//    private void testMovingTiles
 
     public Point getPixelLocation(Point gridLocation) {
 //        Based on the grid location of the tile return the pixel location
@@ -106,6 +110,15 @@ public class Board {
             boardGrid.add(newRow);
         }
     }
+
+    public ArrayList<ArrayList> getBoardState() {
+        return boardGrid;
+    }
+
+    public void setBoardState(ArrayList<ArrayList> newBoardState) {
+        boardGrid = newBoardState;
+    }
+
 
     private void createBorder() {
 //        TODO Create a class that handles each part of the border
@@ -162,11 +175,75 @@ public class Board {
         return playFieldPoints;
     }
 
-
     public void update() {
+        ArrayList<Integer> clearedRowIndexes = new ArrayList<>();
 //        Should be called on each cycle to see if lines need to be cleared and then update
 //        blocks
 //        Also need to check for a game over here too
+        Boolean clearRow = false;
+        for (int i=0; i < boardGrid.size(); i++) {
+            clearRow = checkForClear(boardGrid.get(i));
+            if (clearRow) {
+                clearedRowIndexes.add(i);
+            }
+        }
+        if (clearRow) {
+            clearRows(clearedRowIndexes);
+        }
+    }
+
+    private Boolean checkForClear(ArrayList<BoardTile> boardRow) {
+        Boolean rowFull = false;
+        for (BoardTile tile : boardRow) {
+            if (tile.isEmpty()) {
+                rowFull= false;
+                break;
+            } else {
+                rowFull = true;
+            }
+        }
+        return rowFull;
+    }
+
+    private void clearRows(ArrayList<Integer> rows) {
+        System.out.println("Clearing rows");
+        Collections.reverse(rows);
+        ArrayList<ArrayList> newBoard = new ArrayList<>();
+        List<ArrayList> rowsToUpdate = new ArrayList<>();
+        List<ArrayList> remainingRows = new ArrayList<>();
+        for (Integer row : rows) {
+//            If this even worked it would only work for one line :(
+            System.out.println("Row: " + row);
+            rowsToUpdate = boardGrid.subList(0, row);
+            remainingRows = boardGrid.subList(row, 20);
+            Collections.reverse(rowsToUpdate);
+            rowsToUpdate.remove(0);
+            Collections.reverse(rowsToUpdate);
+            ArrayList<BoardTile> newRow = new ArrayList<>();
+            for (int j=0; j<=9; j++) {
+                Point gridPoint = new Point(j, 0);
+                int xPixelLoc = (j * tileSize) + playFieldPoints.get(0).getX();
+                int yPixelLoc = (0 * tileSize) + playFieldPoints.get(0).getY();
+                Point pixelLocation = new Point(xPixelLoc, yPixelLoc);
+                BoardTile newTile = new BoardTile(gridPoint, pixelLocation, tileSize);
+                newRow.add(newTile);
+                rowsToUpdate.add(newRow);
+            }
+        }
+//        rowsToUpdate.addAll(remainingRows);
+//        newBoard.addAll(rowsToUpdate);
+//        newBoard.addAll(remainingRows);
+//        newBoard.addAll(rowsToUpdate);
+        System.out.println(rowsToUpdate);
+        for (ArrayList<BoardTile> newRow : rowsToUpdate) {
+            newBoard.add(newRow);
+        }
+        System.out.println(newBoard);
+        System.out.println(remainingRows);
+        for (ArrayList<BoardTile> newRow : remainingRows) {
+            newBoard.add(newRow);
+        }
+        boardGrid = newBoard;
     }
 
     public void addBlock(BoardTile newTile) {

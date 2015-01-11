@@ -3,6 +3,7 @@ package testris.playfield;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Point;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BoardTile {
@@ -137,4 +138,11 @@ public class BoardTile {
     public void setColor(HashMap<String, Float> color) {
         this.color = color;
     }
+
+//    public void clearTile(Board playBoard) {
+////        Create a new tile in the previous location of this tile and null self out
+//        BoardTile newTile = new BoardTile(this.gridLocation, this.pixelLocation, this.size);
+//        ArrayList<ArrayList> currentBoardState = playBoard.getBoardState();
+//        ArrayList<BoardTile> currentRowState = currentBoardState.get(this.gridLocation.getY());
+//    }
 }
