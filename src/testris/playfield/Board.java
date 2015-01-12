@@ -221,7 +221,7 @@ public class Board {
             Collections.reverse(rowsToUpdate);
             ArrayList<BoardTile> newRow = new ArrayList<>();
             for (int j=0; j<=9; j++) {
-                Point gridPoint = new Point(j, 0);
+                Point gridPoint = new Point(j, row);
                 int xPixelLoc = (j * tileSize) + playFieldPoints.get(0).getX();
                 int yPixelLoc = (0 * tileSize) + playFieldPoints.get(0).getY();
                 Point pixelLocation = new Point(xPixelLoc, yPixelLoc);
