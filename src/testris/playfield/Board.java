@@ -227,8 +227,8 @@ public class Board {
                 Point pixelLocation = new Point(xPixelLoc, yPixelLoc);
                 BoardTile newTile = new BoardTile(gridPoint, pixelLocation, tileSize);
                 newRow.add(newTile);
-                rowsToUpdate.add(newRow);
             }
+            rowsToUpdate.add(newRow);
         }
 //        rowsToUpdate.addAll(remainingRows);
 //        newBoard.addAll(rowsToUpdate);
